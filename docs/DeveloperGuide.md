@@ -1,8 +1,7 @@
 # Developer Guide
 
-> **Status: ✅ Tech stack finalized (M1). Project scaffolding in progress (M1.5).**  
-> Runnable service code will be available once Milestone 1.5 scaffolding is complete.  
-> This guide reflects confirmed technology choices.
+> **Status: ✅ Tech stack finalized (M1). Runnable scaffold baseline available (M1.5).**
+> This guide separates the services and commands available in the current scaffold from target-state architecture planned for later milestones.
 
 ---
 
@@ -74,11 +73,13 @@ cp ai-services/.env.example ai-services/.env
 docker compose up
 ```
 
-Services will be available at:
-- **Frontend:** `http://localhost:3000`
-- **Backend API:** `http://localhost:4000`
-- **Backend API Docs:** `http://localhost:4000/api/docs`
-- **AI Service:** `http://localhost:8000`
+The current scaffold exposes:
+- **Frontend shell:** `http://localhost:3000`
+- **Backend health endpoint:** `http://localhost:4000/health`
+- **AI-service health endpoint:** `http://localhost:8000/health`
+- **PostgreSQL:** `localhost:5432`
+
+The versioned REST API, Swagger UI, authentication, embedding, and inference endpoints are target-state functionality and are not yet implemented in the scaffold.
 
 To stop: `docker compose down`
 
@@ -121,21 +122,19 @@ pnpm prisma migrate dev
 
 ---
 
-## Running Tests
+## Current Validation and Testing Status
+
+The current scaffold has executable build and source-validation commands:
 
 ```bash
-# Frontend (Vitest)
-cd frontend
-pnpm test
+# Build the Node.js workspaces
+pnpm build
 
-# Backend (Jest)
-cd backend
-pnpm test
-
-# AI Service (Pytest)
-cd ai-services
-uv run pytest
+# Validate Python syntax without starting the AI service
+python -m compileall -q ai-services
 ```
+
+Service-level test suites are not yet configured on the upstream `main` branch. The root `pnpm test` entry point is reserved for the test contract being introduced in [Issue #15](https://github.com/JanmejaiPratapTonk-123/ResearchForge/issues/15); until that work is merged, a successful exit does not mean that tests were executed. Do not use the future Vitest, Jest, or Pytest commands as current availability claims.
 
 ---
 

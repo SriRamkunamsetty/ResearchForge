@@ -69,12 +69,14 @@ cd ResearchForge
 docker compose up --build
 ```
 
-### Available Services
+### Available Scaffold Services
 
-- Frontend → [http://localhost:3000](http://localhost:3000)
-- Backend Health → [http://localhost:4000/health](http://localhost:4000/health)
-- AI Service Health → [http://localhost:8000/health](http://localhost:8000/health)
-- PostgreSQL → localhost:5432
+- Frontend shell → [http://localhost:3000](http://localhost:3000)
+- Backend health endpoint → [http://localhost:4000/health](http://localhost:4000/health)
+- AI-service health endpoint → [http://localhost:8000/health](http://localhost:8000/health)
+- PostgreSQL container → `localhost:5432`
+
+These are the services and endpoints implemented by the current scaffold. Search, knowledge graphs, authentication, citation management, collaboration, and other product APIs remain future milestone work.
 
 ### Stop Project
 
@@ -86,13 +88,13 @@ docker compose down
 
 ## Current Project Status
 
-> 🔵 **ResearchForge is in active development under IEEE Summer of Code 2026.** The tech stack is finalized, project scaffolding is complete, and the runnable scaffold services are available locally through Docker Compose. Core business logic and product features are intentionally not implemented yet and are reserved for IEEE Summer of Code 2026 contributors.
+> 🔵 **ResearchForge is in active development under IEEE Summer of Code 2026.** The M1.5 project scaffold is available locally through Docker Compose. It provides a frontend shell, backend and AI-service health endpoints, database configuration, documentation, and development automation. Core business logic, product APIs, and feature-specific service layers are intentionally not implemented yet and are reserved for future milestones.
 
 | Area                         | Status         | Active Milestone |
 | ---------------------------- | -------------- | ---------------- |
 | Repository & Community Setup | ✅ Complete    | M0               |
 | Tech Stack & Architecture    | ✅ Finalized   | M1               |
-| Project Scaffolding          | ✅ Complete    | M1.5             |
+| Project Scaffolding          | ✅ Runnable baseline | M1.5             |
 | Core Implementation          | 🔴 Not Started | M2               |
 | Alpha Release                | 🔴 Not Started | M3               |
 

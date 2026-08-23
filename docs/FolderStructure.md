@@ -1,43 +1,68 @@
 # Folder Structure
 
-This document explains the purpose, contents, and conventions for every folder in the ResearchForge repository. Use this reference when deciding where your contribution belongs.
+This document explains the current repository layout and identifies which directories are reserved for future implementation milestones. Use it to decide where a contribution belongs without assuming that planned product layers already exist.
 
 ---
 
-## Repository Map
+## Current M1.5 Repository Map
 
-```
+```text
 ResearchForge/
-├── .github/           # GitHub templates, workflows, and CI configuration
-├── ai-services/       # AI/ML microservices (embeddings, NLP) (M2)
-├── assets/            # Static assets (logos, banners, architecture diagrams)
-├── backend/           # Core API server and business logic (M2)
-├── database/          # Schemas, migrations, and seed data (M2)
-├── docs/              # Comprehensive project documentation
-├── frontend/          # Web application UI (M2)
+├── .github/                # Issue/PR templates and CI workflows
+├── ai-services/            # FastAPI scaffold; currently main.py and /health
+├── assets/                 # Logos, banners, diagrams, and wireframes
+├── backend/                # Express scaffold; currently /health route
+├── database/               # Prisma schema and database documentation
+├── docs/                   # Project guides, architecture, and roadmap
+├── frontend/               # Next.js application shell
 ├── .gitignore
 ├── CHANGELOG.md
 ├── CODE_OF_CONDUCT.md
-├── CONTRIBUTING.md    # Canonical contribution reference manual
+├── CONTRIBUTING.md
 ├── LICENSE
-├── README.md          # Project landing page
-└── SECURITY.md        # Security disclosure policy
+├── README.md
+└── SECURITY.md
 ```
 
+The current service endpoints and local ports are documented in the [Developer Guide](DeveloperGuide.md). Product features, API layers, embedding pipelines, and collaboration workflows remain future milestone work.
+
 ---
 
-## Directory Roles & Contributor Responsibilities
+## Directory Roles and Contributor Responsibilities
 
-| Folder | What lives here | Who contributes here |
+| Folder | Current contents and responsibility | Future scope |
 |---|---|---|
-| [`docs/`](.) | All project guides, architecture specs, roadmap | Everyone, writers, tech leads |
-| [`assets/`](../assets/) | Project logos, banners, diagrams, wireframes | UI/UX designers, graphic artists |
-| [`frontend/`](../frontend/) | Web application UI components & pages | Frontend developers (React/Next) |
-| [`backend/`](../backend/) | API routes, business logic, auth, models | Backend developers (Python/Node) |
-| [`ai-services/`](../ai-services/) | Embedding pipelines, NLP, summarization | AI/ML engineers |
-| [`database/`](../database/) | Database schemas, vector indices, migrations | Data & database engineers |
-| [`.github/`](../.github/) | Issue/PR templates, CI workflows | DevOps & maintainers |
+| [`docs/`](.) | Project guides, architecture notes, roadmap, and contribution documentation. | Continue documenting accepted implementation decisions. |
+| [`assets/`](../assets/) | Project logos, banners, diagrams, and wireframes. | Add approved design assets for future product surfaces. |
+| [`frontend/`](../frontend/) | Next.js application shell under `src/app/`, with package and styling configuration. | Add feature pages, components, hooks, and API clients through M2/M3 issues. |
+| [`backend/`](../backend/) | Express application entry point and the current `/health` route. | Add routes, controllers, services, validation, authentication, and persistence layers through accepted issues. |
+| [`ai-services/`](../ai-services/) | FastAPI application entry point and the current `/health` route. | Add routers, embedding models, inference, and summarization pipelines through AI-service issues. |
+| [`database/`](../database/) | Prisma schema area and database documentation. | Add migrations, seed data, vector indexes, and domain models when backend features require them. |
+| [`.github/`](../.github/) | Issue templates, pull-request template, workflow definitions, and repository automation. | Extend quality gates only when the relevant tools and contracts are implemented. |
 
 ---
 
-👉 **Next Step:** Ready to contribute? Check our **[docs/GettingStarted.md](GettingStarted.md)** *(⏱️ ~5 min read)* guide!
+## Planned M2/M3 Structure
+
+The following paths are reserved for future milestone work and should not be created speculatively:
+
+```text
+frontend/src/components/       # Planned UI component system
+frontend/src/hooks/            # Planned React hooks
+frontend/src/lib/              # Planned API and utility modules
+frontend/src/types/            # Planned frontend types
+backend/src/controllers/       # Planned HTTP controllers
+backend/src/services/          # Planned business-logic services
+backend/src/middleware/        # Planned auth, error, and validation middleware
+backend/src/schemas/           # Planned Zod schemas
+ai-services/routers/           # Planned FastAPI routers
+ai-services/handlers/          # Planned request handlers
+ai-services/models/            # Planned embedding and inference models
+packages/types/                # Planned shared TypeScript package
+```
+
+For the rationale and target-state conventions, see the [Developer Experience Guide](DevExperience.md). For runnable setup instructions, see the [Developer Guide](DeveloperGuide.md).
+
+---
+
+👉 **Next Step:** Ready to contribute? Check the **[docs/GettingStarted.md](GettingStarted.md)** guide.
