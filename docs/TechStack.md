@@ -1,7 +1,7 @@
 # Tech Stack
 
-> **Status: ✅ Finalized — Milestone 1 (August 2026)**  
-> The ResearchForge tech stack is frozen for Milestone 1. Each technology was selected against criteria of maintainability, contributor accessibility, and long-term scalability.  
+> **Status: ✅ Finalized target decisions — Milestone 1 (August 2026)**
+> The ResearchForge technology decisions are frozen for Milestone 1, but target decisions do not imply that every package is installed in the M1.5 scaffold. For the verified installed package graph, see **[docs/DependencyStatus.md](DependencyStatus.md)**.
 > For system topology and service interactions, see **[docs/Architecture.md](Architecture.md)**.
 
 ---
@@ -9,6 +9,7 @@
 ## Table of Contents
 
 - [Selection Criteria](#selection-criteria)
+- [Installed Dependency Status](#installed-dependency-status)
 - [Frontend](#frontend)
   - [Next.js (React)](#nextjs-react)
   - [TypeScript](#typescript)
@@ -57,6 +58,12 @@ All technology choices were evaluated against the following criteria:
 
 ---
 
+## Installed Dependency Status
+
+This document records target-state technology decisions. The current installed and declared dependency graph is maintained separately in [docs/DependencyStatus.md](DependencyStatus.md), including version differences, planned packages, and the commands currently supported by the scaffold.
+
+---
+
 ## Frontend
 
 ---
@@ -67,9 +74,9 @@ All technology choices were evaluated against the following criteria:
 |---|---|
 | **Purpose** | Web application framework — routing, rendering, and frontend infrastructure |
 | **Ownership** | Frontend contributors (`frontend/`) |
-| **Version** | Current stable major (Next.js 15 / React 19) |
+| **Target version** | Next.js 15 / React 19 |
 | **Decision Date** | August 2026 |
-| **Status** | ✅ Finalized |
+| **Status** | ✅ Finalized target decision; verify installed state in [DependencyStatus.md](DependencyStatus.md) |
 
 **Why selected:**  
 The maintainer has existing React experience. Next.js extends React with file-system routing, server-side rendering, and a structured project convention — reducing the number of architectural decisions contributors need to make. It has the largest contributor familiarity in the frontend ecosystem.
@@ -98,7 +105,7 @@ The maintainer has existing React experience. Next.js extends React with file-sy
 | **Ownership** | All contributors working in `frontend/` and `backend/` |
 | **Version** | Current stable |
 | **Decision Date** | August 2026 |
-| **Status** | ✅ Finalized |
+| **Status** | ✅ Finalized target decision; verify installed state in [DependencyStatus.md](DependencyStatus.md) |
 
 **Why selected:**  
 TypeScript provides compile-time type safety, enabling IDE autocompletion and catching errors before runtime. It is adopted incrementally — contributors comfortable with JavaScript can contribute and add types gradually. The maintainer's TypeScript learning goal is a direct fit.
@@ -126,7 +133,7 @@ TypeScript provides compile-time type safety, enabling IDE autocompletion and ca
 | **Ownership** | Frontend contributors (`frontend/`) |
 | **Version** | Current stable |
 | **Decision Date** | August 2026 |
-| **Status** | ✅ Finalized |
+| **Status** | ✅ Finalized target decision; verify installed state in [DependencyStatus.md](DependencyStatus.md) |
 
 **Why selected:**  
 Tailwind eliminates per-component CSS files and naming conflicts across contributors. Design consistency is enforced through a shared configuration file. Integrates natively with Next.js and shadcn/ui.
@@ -154,7 +161,7 @@ Tailwind eliminates per-component CSS files and naming conflicts across contribu
 | **Ownership** | Frontend contributors (`frontend/components/`) |
 | **Version** | Current stable |
 | **Decision Date** | August 2026 |
-| **Status** | ✅ Finalized |
+| **Status** | ✅ Finalized target decision; verify installed state in [DependencyStatus.md](DependencyStatus.md) |
 
 **Why selected:**  
 shadcn/ui components are copied into the project rather than installed as a dependency, giving full ownership and customizability. Components are built on Radix UI for accessibility compliance. Styling is done via Tailwind, maintaining a single styling system.
@@ -183,7 +190,7 @@ shadcn/ui components are copied into the project rather than installed as a depe
 | **Ownership** | Frontend contributors |
 | **Version** | Current stable (v5) |
 | **Decision Date** | August 2026 |
-| **Status** | ✅ Finalized |
+| **Status** | ✅ Finalized target decision; verify installed state in [DependencyStatus.md](DependencyStatus.md) |
 
 **Why selected:**  
 At MVP, ResearchForge's frontend state is almost entirely server state (papers, search results, workspaces). TanStack Query handles loading states, error states, caching, and background refetching declaratively. It eliminates the boilerplate of manual `useEffect` + `fetch` patterns and does not require a global store.
@@ -211,7 +218,7 @@ At MVP, ResearchForge's frontend state is almost entirely server state (papers, 
 | **Ownership** | Frontend contributors; Zod schemas also used in `backend/` |
 | **Version** | Current stable |
 | **Decision Date** | August 2026 |
-| **Status** | ✅ Finalized |
+| **Status** | ✅ Finalized target decision; verify installed state in [DependencyStatus.md](DependencyStatus.md) |
 
 **Why selected:**  
 React Hook Form provides performant, uncontrolled form management with minimal re-renders. Zod provides schema-based validation with TypeScript type inference — a single Zod schema validates a form on the frontend and can validate request bodies on the backend, reducing duplication.
@@ -239,7 +246,7 @@ React Hook Form provides performant, uncontrolled form management with minimal r
 | **Ownership** | Frontend contributors |
 | **Version** | Current stable |
 | **Decision Date** | August 2026 |
-| **Status** | ✅ Finalized |
+| **Status** | ✅ Finalized target decision; verify installed state in [DependencyStatus.md](DependencyStatus.md) |
 
 **Why selected:**  
 Lucide React is the default icon set used by shadcn/ui. Consistent, well-maintained, MIT-licensed, and tree-shakeable (only imported icons are bundled).
@@ -263,7 +270,7 @@ Lucide React is the default icon set used by shadcn/ui. Consistent, well-maintai
 | **Ownership** | Backend contributors (`backend/`) |
 | **Version** | Current stable |
 | **Decision Date** | August 2026 |
-| **Status** | ✅ Finalized |
+| **Status** | ✅ Finalized target decision; verify installed state in [DependencyStatus.md](DependencyStatus.md) |
 
 **Why selected:**  
 The maintainer has existing Node.js + Express experience. Express is the most widely known Node.js server framework, maximizing contributor familiarity. At MVP scale, Express provides everything required without imposing a steep structural learning curve.
@@ -294,7 +301,7 @@ The backend's role in ResearchForge is coordination — accepting requests, quer
 | **Ownership** | Backend contributors (`backend/`) |
 | **Approach** | JWT tokens stored in HTTP-only cookies |
 | **Decision Date** | August 2026 |
-| **Status** | ✅ Finalized |
+| **Status** | ✅ Finalized target decision; verify installed state in [DependencyStatus.md](DependencyStatus.md) |
 
 **Why this approach:**  
 JWT stored in HTTP-only cookies provides a secure authentication pattern without exposing tokens to client-side JavaScript. HTTP-only cookies are inaccessible to XSS attacks. This approach is library-agnostic — the specific implementation library will be confirmed during M1.5 scaffolding.
@@ -325,7 +332,7 @@ JWT stored in HTTP-only cookies provides a secure authentication pattern without
 | **Ownership** | Backend contributors and database engineers (`database/`) |
 | **Version** | Current stable |
 | **Decision Date** | August 2026 |
-| **Status** | ✅ Finalized |
+| **Status** | ✅ Finalized target decision; verify installed state in [DependencyStatus.md](DependencyStatus.md) |
 
 **Why selected:**  
 The maintainer has existing PostgreSQL experience. PostgreSQL supports `pgvector` for vector similarity search and `Apache AGE` for graph queries — meaning all three storage patterns (relational, vector, graph) can be served from a single database system. This eliminates the operational complexity of running multiple database services at MVP.
@@ -353,7 +360,7 @@ The maintainer has existing PostgreSQL experience. PostgreSQL supports `pgvector
 | **Ownership** | Backend contributors (`database/`, `backend/`) |
 | **Version** | Current stable |
 | **Decision Date** | August 2026 |
-| **Status** | ✅ Finalized |
+| **Status** | ✅ Finalized target decision; verify installed state in [DependencyStatus.md](DependencyStatus.md) |
 
 **Why selected:**  
 The maintainer has existing Prisma experience. Prisma's schema-first approach produces human-readable schema files that are immediately understandable to contributors without deep SQL knowledge. Migrations are explicit, reviewable files. TypeScript type inference from the Prisma client aligns with the project's TypeScript-first approach.
@@ -383,7 +390,7 @@ The maintainer has existing Prisma experience. Prisma's schema-first approach pr
 | **Ownership** | Backend contributors, database engineers |
 | **Version** | Current stable |
 | **Decision Date** | August 2026 |
-| **Status** | ✅ Finalized |
+| **Status** | ✅ Finalized target decision; verify installed state in [DependencyStatus.md](DependencyStatus.md) |
 
 **Why selected:**  
 `pgvector` runs as a PostgreSQL extension, enabling vector similarity search without operating a separate database service. At MVP scale, this eliminates a significant infrastructure dependency. IVFFlat indexes in pgvector are sufficient for tens of thousands to low millions of vectors.
@@ -415,7 +422,7 @@ The maintainer has existing Prisma experience. Prisma's schema-first approach pr
 | **Ownership** | AI/ML contributors (`ai-services/`) |
 | **Version** | Current stable |
 | **Decision Date** | August 2026 |
-| **Status** | ✅ Finalized |
+| **Status** | ✅ Finalized target decision; verify installed state in [DependencyStatus.md](DependencyStatus.md) |
 
 **Why selected:**  
 Python is the native language of the ML/AI ecosystem. FastAPI is the right framework for exposing Python-based AI pipelines via HTTP. It generates automatic OpenAPI documentation, has native async support for concurrent inference requests, and is the most widely adopted Python API framework in the AI/ML community. The maintainer's FastAPI learning goal is correctly scoped to this isolated microservice.
@@ -443,7 +450,7 @@ Python is the native language of the ML/AI ecosystem. FastAPI is the right frame
 | **Ownership** | AI/ML contributors (`ai-services/`) |
 | **Model** | `all-MiniLM-L6-v2` |
 | **Decision Date** | August 2026 |
-| **Status** | ✅ Finalized |
+| **Status** | ✅ Finalized target decision; verify installed state in [DependencyStatus.md](DependencyStatus.md) |
 
 **Why selected:**  
 `all-MiniLM-L6-v2` is small enough to run on CPU (no GPU required), fast enough for MVP-scale ingestion, and produces good quality embeddings for academic text. Critically, it requires no API key — contributors can run the full application locally without any external service dependency.
@@ -478,7 +485,7 @@ Python is the native language of the ML/AI ecosystem. FastAPI is the right frame
 | **Ownership** | DevOps contributors, maintainer |
 | **Version** | Current stable |
 | **Decision Date** | August 2026 |
-| **Status** | ✅ Finalized |
+| **Status** | ✅ Finalized target decision; verify installed state in [DependencyStatus.md](DependencyStatus.md) |
 
 **Why selected:**  
 Docker Compose provides a single `docker compose up` command that starts all four services (frontend, backend, AI service, PostgreSQL) in a consistent environment. This eliminates "works on my machine" problems and ensures every contributor has an identical local setup.
@@ -507,7 +514,7 @@ Docker Compose provides a single `docker compose up` command that starts all fou
 | **Ownership** | Maintainer, DevOps contributors (`.github/workflows/`) |
 | **Version** | Current |
 | **Decision Date** | August 2026 |
-| **Status** | ✅ Finalized |
+| **Status** | ✅ Finalized target decision; verify installed state in [DependencyStatus.md](DependencyStatus.md) |
 
 **Why selected:**  
 The repository is hosted on GitHub. GitHub Actions requires no additional infrastructure and integrates directly with pull requests. Automated checks reduce maintainer review burden and catch errors before they reach `main`.
@@ -527,7 +534,7 @@ The repository is hosted on GitHub. GitHub Actions requires no additional infras
 | **Ownership** | All Node.js contributors |
 | **Version** | Current stable |
 | **Decision Date** | August 2026 |
-| **Status** | ✅ Finalized |
+| **Status** | ✅ Finalized target decision; verify installed state in [DependencyStatus.md](DependencyStatus.md) |
 
 **Why selected:**  
 pnpm uses a content-addressable store that reduces `node_modules` size and installation time. It is a drop-in replacement for npm — contributors who know npm commands will use pnpm with no learning overhead.
@@ -547,7 +554,7 @@ pnpm uses a content-addressable store that reduces `node_modules` size and insta
 | **Ownership** | AI/ML contributors (`ai-services/`) |
 | **Version** | Current stable |
 | **Decision Date** | August 2026 |
-| **Status** | ✅ Finalized |
+| **Status** | ✅ Finalized target decision; verify installed state in [DependencyStatus.md](DependencyStatus.md) |
 
 **Note on early onboarding:** Contributors unfamiliar with `uv` may use a standard `venv` + `pip` setup during early M1.5 onboarding. `uv` is the recommended standard for the project.
 
@@ -569,7 +576,7 @@ pnpm uses a content-addressable store that reduces `node_modules` size and insta
 | **Ownership** | All frontend and backend contributors |
 | **Version** | Current stable |
 | **Decision Date** | August 2026 |
-| **Status** | ✅ Finalized |
+| **Status** | ✅ Finalized target decision; verify installed state in [DependencyStatus.md](DependencyStatus.md) |
 
 **Why selected:**  
 ESLint enforces code quality rules; Prettier enforces consistent formatting. Together they eliminate formatting debates in code review and catch common errors early. Both are industry standards in the JavaScript/TypeScript ecosystem.
@@ -594,7 +601,7 @@ ESLint enforces code quality rules; Prettier enforces consistent formatting. Tog
 | **Ownership** | Frontend contributors |
 | **Version** | Current stable |
 | **Decision Date** | August 2026 |
-| **Status** | ✅ Finalized |
+| **Status** | ✅ Finalized target decision; verify installed state in [DependencyStatus.md](DependencyStatus.md) |
 
 **Why selected:**  
 Vitest is the natural test runner for Next.js / Vite projects — faster than Jest with near-identical API. React Testing Library provides component testing that focuses on user behavior rather than implementation details.
@@ -615,7 +622,7 @@ Vitest is the natural test runner for Next.js / Vite projects — faster than Je
 | **Ownership** | Backend contributors |
 | **Version** | Current stable |
 | **Decision Date** | August 2026 |
-| **Status** | ✅ Finalized |
+| **Status** | ✅ Finalized target decision; verify installed state in [DependencyStatus.md](DependencyStatus.md) |
 
 **Learning resources:**
 - [Jest Docs](https://jestjs.io)
@@ -632,7 +639,7 @@ Vitest is the natural test runner for Next.js / Vite projects — faster than Je
 | **Ownership** | AI/ML contributors |
 | **Version** | Current stable |
 | **Decision Date** | August 2026 |
-| **Status** | ✅ Finalized |
+| **Status** | ✅ Finalized target decision; verify installed state in [DependencyStatus.md](DependencyStatus.md) |
 
 **Learning resources:**
 - [Pytest Docs](https://docs.pytest.org)
@@ -653,7 +660,7 @@ Vitest is the natural test runner for Next.js / Vite projects — faster than Je
 | **Ownership** | Backend contributors |
 | **Implementation** | `swagger-jsdoc` (spec generation) + `swagger-ui-express` (interactive UI) |
 | **Decision Date** | August 2026 |
-| **Status** | ✅ Finalized |
+| **Status** | ✅ Finalized target decision; verify installed state in [DependencyStatus.md](DependencyStatus.md) |
 
 **Why selected:**  
 OpenAPI is the industry standard for documenting REST APIs. `swagger-jsdoc` generates the OpenAPI spec from JSDoc comments in route files, keeping documentation co-located with code. FastAPI generates its own OpenAPI spec automatically.
