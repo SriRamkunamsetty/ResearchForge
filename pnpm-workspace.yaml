@@ -1,6 +1,8 @@
 packages:
   - 'frontend'
   - 'backend'
+# Explicit approvals for build scripts required by the current scaffold.
+# CI uses pnpm 9, which ignores this newer key; pnpm 10/11 apply it.
 allowBuilds:
   '@prisma/client': true
   '@prisma/engines': true
