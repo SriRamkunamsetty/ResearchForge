@@ -11,11 +11,11 @@ ResearchForge is currently a runnable scaffold for a four-service research platf
 | ID | Area | Problem | Priority | Status | Recommended contribution |
 |---|---|---|---|---|---|
 | RF-001 | Workspace and CI | Bare pnpm filters match no projects but exit successfully | High | Fixed in [Issue #11](https://github.com/JanmejaiPratapTonk-123/ResearchForge/issues/11) and [PR #12](https://github.com/JanmejaiPratapTonk-123/ResearchForge/pull/12) | Keep as the reference example for reproduction and validation |
-| RF-002 | Testing | Root `pnpm test` exits successfully without running tests | High | Open follow-up | Add an explicit test contract and a truthful test command |
-| RF-003 | CI quality gates | CI does not run the full quality toolchain described by project documentation | Medium | Open follow-up | Align CI checks with the currently implemented milestone |
-| RF-004 | Documentation | Official guides disagree about scaffold status and available infrastructure | Medium | Open follow-up | Separate current-state documentation from future-state plans |
-| RF-005 | Documentation and dependencies | Finalized technology documentation does not match installed versions and packages | Medium | Open follow-up | Clarify target versus installed versions before upgrading dependencies |
-| RF-006 | Workspace configuration | `pnpm-workspace.yaml` contains placeholder-like `allowBuilds` values | Medium | Needs dedicated verification | Confirm behavior under the repository’s supported pnpm version, then normalize the configuration |
+| RF-002 | Testing | Root `pnpm test` exits successfully without running tests | High | Fixed in [Issue #15](https://github.com/JanmejaiPratapTonk-123/ResearchForge/issues/15) and [PR #17](https://github.com/JanmejaiPratapTonk-123/ResearchForge/pull/17) | Retain the focused backend health smoke test and extend coverage separately |
+| RF-003 | CI quality gates | CI does not run the full quality toolchain described by project documentation | Medium | Fixed in [Issue #18](https://github.com/JanmejaiPratapTonk-123/ResearchForge/issues/18) and [PR #19](https://github.com/JanmejaiPratapTonk-123/ResearchForge/pull/19) | Keep broader future quality gates separate from the implemented build and Python compilation checks |
+| RF-004 | Documentation | Official guides disagree about scaffold status and available infrastructure | Medium | Fixed in [Issue #20](https://github.com/JanmejaiPratapTonk-123/ResearchForge/issues/20) and [PR #21](https://github.com/JanmejaiPratapTonk-123/ResearchForge/pull/21) | Preserve the current-versus-target distinction as the scaffold evolves |
+| RF-005 | Documentation and dependencies | Finalized technology documentation does not match installed versions and packages | Medium | Fixed in [Issue #22](https://github.com/JanmejaiPratapTonk-123/ResearchForge/issues/22) and [PR #23](https://github.com/JanmejaiPratapTonk-123/ResearchForge/pull/23) | Update the dependency inventory whenever manifests or target-stack decisions change |
+| RF-006 | Workspace configuration | `pnpm-workspace.yaml` contains placeholder-like `allowBuilds` values | Medium | Fixed in [Issue #24](https://github.com/JanmejaiPratapTonk-123/ResearchForge/issues/24) and [PR #25](https://github.com/JanmejaiPratapTonk-123/ResearchForge/pull/25) | Keep explicit boolean approvals and revisit the pnpm 9 pin only in a separate toolchain issue |
 
 ## RF-001 — Silent pnpm Workspace Selection Failure
 
@@ -71,15 +71,15 @@ The documentation should include a clearly labeled “currently installed” ver
 
 ## RF-006 — Placeholder Build-Approval Values Need Verification
 
-`pnpm-workspace.yaml` contains `allowBuilds` entries whose values are the literal text `set this to true or false`. The current sandbox’s pnpm version accepted installation, so this observation is not yet sufficient to claim a reproduced failure. It can still create ambiguity or unsafe package-build behavior under the repository’s supported pnpm versions.
+`pnpm-workspace.yaml` contained `allowBuilds` entries whose values were the literal text `set this to true or false`. Under pnpm 11, those values were parsed as strings; under pnpm 9.15.4, the CI-pinned version, the newer key was ignored. Frozen installs succeeded under both versions, establishing a reproducible configuration ambiguity rather than an install-blocking failure.
 
 ### Acceptance criteria
 
-Test the file using the pnpm version declared by CI and the current supported version range. Confirm whether the values are valid and whether native or post-install build steps are blocked or allowed. If they are placeholders, replace them with intentional boolean values and document the security rationale. If the configuration is valid under a newer pnpm release but unsupported under CI’s pinned version, align the pin and configuration in a separate focused change.
+The issue was addressed in PR #25 by replacing all four placeholders with explicit `true` values for `@prisma/client`, `@prisma/engines`, `esbuild`, and `prisma`, together with a compatibility comment. pnpm 11 returned boolean values, pnpm 9.15.4 returned `undefined` without an error, frozen installs passed under both versions, and backend and frontend TypeScript checks passed. No runtime source or dependency version was changed.
 
 ## One-by-One Execution Order
 
-The recommended sequence is to resolve RF-002 first because it creates a misleading green quality signal and can be addressed without implementing product features. RF-003 should follow once the test contract is explicit. RF-004 and RF-005 are documentation synchronization tasks that should then reflect the actual milestone state. RF-006 should be handled after version-specific pnpm behavior has been verified.
+The planned sequence has been completed: RF-001 was resolved first, followed by RF-002, RF-003, RF-004, RF-005, and version-specific RF-006 verification. Each item has a separate upstream issue and focused pull request. The six pull requests remain subject to normal maintainer review and merge decisions.
 
 Each contribution should follow the repository workflow: open or update one issue, request assignment, create one focused branch, implement the smallest complete change, run the documented validation commands, and open a pull request that closes only that issue.[3]
 
