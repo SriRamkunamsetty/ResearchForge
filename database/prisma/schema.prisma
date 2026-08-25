@@ -12,6 +12,58 @@ datasource db {
   extensions = [pgvector(map: "vector")]
 }
 
-// NOTE: Models are intentionally omitted for Milestone 1.5.
-// Contributors will implement core data models (User, Paper, Workspace, PaperEmbedding)
-// as part of IEEE Summer of Code contributor issues.
+model User {
+  id          String            @id @default(uuid()) @db.Uuid
+  email       String            @unique
+  displayName String?           @map("display_name")
+  createdAt   DateTime          @default(now()) @map("created_at")
+  updatedAt   DateTime          @updatedAt @map("updated_at")
+  workspaces  Workspace[]       @relation("WorkspaceOwner")
+
+  @@map("users")
+}
+
+model Workspace {
+  id          String            @id @default(uuid()) @db.Uuid
+  name        String
+  description String?
+  ownerId     String            @map("owner_id") @db.Uuid
+  createdAt   DateTime          @default(now()) @map("created_at")
+  updatedAt   DateTime          @updatedAt @map("updated_at")
+  owner       User              @relation("WorkspaceOwner", fields: [ownerId], references: [id], onDelete: Restrict, onUpdate: Cascade)
+
+  @@index([ownerId])
+  @@map("workspaces")
+}
+
+model Paper {
+  id          String          @id @default(uuid()) @db.Uuid
+  title       String
+  abstract    String?
+  doi         String?         @unique
+  arxivId     String?         @unique @map("arxiv_id")
+  sourceUrl   String?         @map("source_url")
+  publishedAt DateTime?       @map("published_at")
+  authors     Json?
+  metadata    Json?
+  createdAt   DateTime        @default(now()) @map("created_at")
+  updatedAt   DateTime        @updatedAt @map("updated_at")
+  embedding   PaperEmbedding?
+
+  @@index([publishedAt])
+  @@index([title])
+  @@map("papers")
+}
+
+model PaperEmbedding {
+  id         String   @id @default(uuid()) @db.Uuid
+  paperId    String   @unique @map("paper_id") @db.Uuid
+  embedding  Unsupported("vector")?
+  modelName  String   @map("model_name")
+  dimensions Int
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @updatedAt @map("updated_at")
+  paper      Paper    @relation(fields: [paperId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  @@map("paper_embeddings")
+}

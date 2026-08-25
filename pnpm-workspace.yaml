@@ -1,6 +1,7 @@
 packages:
   - 'frontend'
   - 'backend'
+  - 'database'
 allowBuilds:
   '@prisma/client': set this to true or false
   '@prisma/engines': set this to true or false

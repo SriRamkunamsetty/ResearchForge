@@ -46,6 +46,16 @@ importers:
         specifier: ^5.5.2
         version: 5.9.3
 
+  database:
+    dependencies:
+      '@prisma/client':
+        specifier: ^5.17.0
+        version: 5.22.0(prisma@5.22.0)
+    devDependencies:
+      prisma:
+        specifier: ^5.17.0
+        version: 5.22.0
+
   frontend:
     dependencies:
       next:

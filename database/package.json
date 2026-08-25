@@ -1,0 +1,16 @@
+{
+  "name": "researchforge-database",
+  "version": "0.1.0",
+  "private": true,
+  "description": "ResearchForge Prisma schema and database tooling",
+  "scripts": {
+    "validate": "prisma validate --schema prisma/schema.prisma",
+    "generate": "prisma generate --schema prisma/schema.prisma"
+  },
+  "dependencies": {
+    "@prisma/client": "^5.17.0"
+  },
+  "devDependencies": {
+    "prisma": "^5.17.0"
+  }
+}

@@ -13,29 +13,32 @@ The `database/` module houses the Prisma ORM configuration, schema definitions, 
 
 ## Service Responsibilities
 
-- **Current (M1.5):** Prisma schema configuration (`prisma/schema.prisma`) targeting PostgreSQL + `pgvector`.
-- **Future (M2+):** Database migrations, initial seed data, relational schema definitions (`User`, `Paper`, `Workspace`), and vector index configurations (`PaperEmbedding`).
+- **Current (M1.5):** Prisma schema configuration (`prisma/schema.prisma`) targeting PostgreSQL + `pgvector`, with the initial relational model layer implemented.
+- **Current model layer:** `User`, `Workspace`, `Paper`, and `PaperEmbedding`.
+- **Future (M2+):** Migrations, seed data, citation relationships, annotations, and vector index tuning as application requirements become concrete.
 
 ---
 
 ## How to Run & Apply Migrations
 
 ```bash
-# From the backend/ directory (or root via pnpm):
-cd ../backend
+# From the repository root
+cd ..
+
+# Validate the schema
+pnpm --filter ./database validate
 
 # Generate Prisma Client types
-pnpm prisma generate
+pnpm --filter ./database generate
 
-# Create and apply a new migration
-pnpm prisma migrate dev --name init
+# Create and apply a migration after reviewing the schema
+pnpm --filter ./database exec prisma migrate dev --schema prisma/schema.prisma --name init
 ```
 
 ---
 
 ## Planned Contributor Issues
 
-Contributors can help build the database infrastructure by taking on tasks such as:
-- Defining the core `User` and `Workspace` Prisma models
-- Defining the `Paper` and `PaperEmbedding` vector models
-- Writing database seed scripts for local development testing
+The initial model layer now covers the entities explicitly named by the architecture: users, papers, paper metadata, workspaces, and paper embeddings. Workspace collaboration membership remains deferred until its application contract is defined. `PaperEmbedding.embedding` is represented as `Unsupported("vector")` because Prisma ORM does not expose pgvector as a native scalar; vector writes and similarity queries should use customized SQL migrations and raw SQL. The schema intentionally does not add speculative citation, annotation, or knowledge-graph tables.
+
+Contributors can extend the database infrastructure through focused issues such as migration review, seed data for local development, application-level repositories, and pgvector index tuning once the corresponding query patterns are implemented.
