@@ -34,9 +34,11 @@ jobs:
       - name: Install dependencies
         run: pnpm install
       - name: Type check backend
-        run: pnpm --filter backend exec tsc --noEmit
+        run: pnpm --filter ./backend exec tsc --noEmit
       - name: Type check frontend
-        run: pnpm --filter frontend exec tsc --noEmit
+        run: pnpm --filter ./frontend exec tsc --noEmit
+      - name: Run tests
+        run: pnpm test
       - name: Build Node.js workspaces
         run: pnpm build
 
