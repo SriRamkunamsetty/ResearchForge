@@ -169,7 +169,7 @@ Read the full vision: [docs/Vision.md](docs/Vision.md)
 
 ## Tech Stack
 
-The M1 tech stack is finalized. See [docs/TechStack.md](docs/TechStack.md) for full architectural decision rationale.
+The M1 technology decisions are finalized as target architecture. See [docs/TechStack.md](docs/TechStack.md) for decision rationale and [docs/DependencyStatus.md](docs/DependencyStatus.md) for the verified installed package inventory.
 
 | Layer                     | Technology                                              |
 | ------------------------- | ------------------------------------------------------- |
@@ -229,7 +229,8 @@ Full milestone detail: [docs/Roadmap.md](docs/Roadmap.md)
 
 - [docs/Vision.md](docs/Vision.md) — Mission statement and user problems
 - [docs/Architecture.md](docs/Architecture.md) — System topology and service design
-- [docs/TechStack.md](docs/TechStack.md) — Finalized tech stack with decision rationale
+- [docs/TechStack.md](docs/TechStack.md) — Target tech stack with decision rationale
+- [docs/DependencyStatus.md](docs/DependencyStatus.md) — Verified installed-versus-target dependency inventory
 - [docs/DevExperience.md](docs/DevExperience.md) — Developer experience and code organization guide
 - [docs/Roadmap.md](docs/Roadmap.md) — Milestone plan and status
 - [docs/Features.md](docs/Features.md) — Feature specifications
