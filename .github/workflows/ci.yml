@@ -41,6 +41,9 @@ jobs:
       - name: Type check frontend
         run: pnpm --filter ./frontend exec tsc --noEmit
 
+      - name: Run tests
+        run: pnpm test
+
   python-check:
     name: Python Lint Check (AI Service)
     runs-on: ubuntu-latest
