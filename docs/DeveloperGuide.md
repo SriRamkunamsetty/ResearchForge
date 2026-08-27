@@ -1,8 +1,7 @@
 # Developer Guide
 
-> **Status: ✅ Tech stack finalized (M1). Project scaffolding in progress (M1.5).**  
-> Runnable service code will be available once Milestone 1.5 scaffolding is complete.  
-> This guide reflects confirmed technology choices.
+> **Status: ✅ Tech stack finalized (M1). Runnable scaffold baseline available (M1.5).**
+> This guide separates the services and commands available in the current scaffold from target-state architecture planned for later milestones.
 
 ---
 
@@ -74,11 +73,13 @@ cp ai-services/.env.example ai-services/.env
 docker compose up
 ```
 
-Services will be available at:
-- **Frontend:** `http://localhost:3000`
-- **Backend API:** `http://localhost:4000`
-- **Backend API Docs:** `http://localhost:4000/api/docs`
-- **AI Service:** `http://localhost:8000`
+The current scaffold exposes:
+- **Frontend shell:** `http://localhost:3000`
+- **Backend health endpoint:** `http://localhost:4000/health`
+- **AI-service health endpoint:** `http://localhost:8000/health`
+- **PostgreSQL:** `localhost:5432`
+
+The versioned REST API, Swagger UI, authentication, embedding, and inference endpoints are target-state functionality and are not yet implemented in the scaffold.
 
 To stop: `docker compose down`
 
@@ -121,15 +122,24 @@ pnpm prisma migrate dev
 
 ---
 
-## Running Tests
+## Current Validation and Testing Status
+
+The current scaffold has executable build, source-validation, and test commands:
 
 Run the repository-level test command from the project root:
 
 ```bash
+# Build the Node.js workspaces
+pnpm build
+
+# Validate Python syntax without starting the AI service
+python -m compileall -q ai-services
+
+# Run the repository-level test command
 pnpm test
 ```
 
-The current scaffold includes a backend Jest smoke test for `GET /health`. Frontend and AI-service test suites are planned for later milestones and are not yet configured in their workspace manifests. When those suites are added, they should be included through the same root command.
+The current scaffold includes a backend health smoke test for `GET /health`. Frontend and AI-service test suites are planned for later milestones and are not yet configured in their workspace manifests. When those suites are added, they should be included through the same root command.
 
 To run the currently configured backend suite directly:
 
@@ -137,6 +147,8 @@ To run the currently configured backend suite directly:
 cd backend
 pnpm test
 ```
+
+The root test command executes the currently configured backend test rather than serving as a no-op. Broader Vitest, Jest, or Pytest suites remain future work unless they are explicitly added to the workspace manifests.
 
 ---
 

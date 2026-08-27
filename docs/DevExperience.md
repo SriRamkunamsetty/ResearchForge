@@ -1,66 +1,54 @@
 # Developer Experience Guide
 
-> **Status: ✅ Active — Milestone 1**  
-> This document defines code organization, naming conventions, and architectural patterns for ResearchForge.  
-> Following these conventions ensures consistency across contributions from multiple engineers.
+> **Status: ✅ Active — M1.5 runnable scaffold baseline**
+> This document separates the files and conventions available in the current repository from target-state architecture planned for later milestones.
+
+Following the conventions below keeps contributions consistent without implying that future product layers already exist.
 
 ---
 
 ## Table of Contents
 
-- [Repository Structure](#repository-structure)
+- [Current Scaffold Structure](#current-scaffold-structure)
 - [Naming Conventions](#naming-conventions)
-- [Code Organization](#code-organization)
+- [Target-State Code Organization](#target-state-code-organization)
   - [Frontend](#frontend)
   - [Backend API](#backend-api)
   - [AI Service](#ai-service)
-- [State Management Strategy](#state-management-strategy)
-- [API Organization](#api-organization)
+- [Target-State State Management](#target-state-state-management)
+- [Target-State API Organization](#target-state-api-organization)
 - [Environment Variable Strategy](#environment-variable-strategy)
-- [Shared Types Strategy](#shared-types-strategy)
-- [Reusable Component Strategy](#reusable-component-strategy)
+- [Target-State Shared Types](#target-state-shared-types)
+- [Target-State Reusable Components](#target-state-reusable-components)
 
 ---
 
-## Repository Structure
+## Current Scaffold Structure
 
-```
+The M1.5 repository is a runnable baseline rather than the complete product architecture. The currently implemented service entry points are:
+
+```text
 ResearchForge/
-├── .github/                # GitHub templates, CI workflows
-│   ├── ISSUE_TEMPLATE/
-│   ├── workflows/
-│   └── PULL_REQUEST_TEMPLATE.md
-├── ai-services/            # FastAPI AI microservice
-│   ├── routers/
-│   ├── handlers/
-│   ├── models/
-│   ├── main.py
+├── .github/                # Issue/PR templates and CI workflows
+├── ai-services/
+│   ├── main.py             # FastAPI application with /health
 │   ├── pyproject.toml
+│   ├── requirements.txt
 │   └── .env.example
-├── assets/                 # Logos, banners, diagrams, wireframes
-├── backend/                # Express.js API server
+├── assets/                 # Logos, banners, and design assets
+├── backend/
 │   ├── src/
-│   │   ├── routes/
-│   │   ├── controllers/
-│   │   ├── services/
-│   │   ├── middleware/
-│   │   ├── schemas/        # Zod validation schemas (source of truth)
-│   │   └── index.ts
+│   │   ├── index.ts        # Express listener entry point
+│   │   └── routes/
+│   │       └── health.ts   # /health route
 │   ├── package.json
 │   └── .env.example
-├── database/               # Prisma schema and migrations
-│   ├── schema.prisma
-│   └── migrations/
-├── docs/                   # All project documentation
-├── frontend/               # Next.js web application
-│   ├── src/
-│   │   ├── app/            # Next.js App Router pages
-│   │   ├── components/
-│   │   │   ├── ui/         # shadcn/ui base components
-│   │   │   └── [feature]/  # Feature-specific components
-│   │   ├── hooks/          # Custom React hooks
-│   │   ├── lib/            # Utilities, API client, helpers
-│   │   └── types/          # Shared TypeScript types (frontend)
+├── database/
+│   ├── prisma/schema.prisma
+│   └── README.md
+├── docs/                   # Project documentation
+├── frontend/
+│   ├── src/app/            # Next.js application shell
 │   ├── package.json
 │   └── .env.example
 ├── docker-compose.yml
@@ -68,13 +56,13 @@ ResearchForge/
 └── README.md
 ```
 
+The `controllers/`, `services/`, `middleware/`, `schemas/`, feature-specific frontend folders, AI routers, embedding models, and shared packages described below are **target-state structure**. Contributors should create them only when an accepted milestone issue requires them.
+
 ---
 
 ## Naming Conventions
 
 Consistent naming reduces cognitive load for contributors reading unfamiliar code.
-
-### Files & Directories
 
 | Scope | Convention | Example |
 |---|---|---|
@@ -82,143 +70,99 @@ Consistent naming reduces cognitive load for contributors reading unfamiliar cod
 | Utility files | `kebab-case.ts` | `format-date.ts` |
 | API route files | `kebab-case.ts` | `papers.routes.ts` |
 | Test files | `[filename].test.ts` | `papers.routes.test.ts` |
+| Python modules | `snake_case.py` | `embed_handler.py` |
 | Directories | `kebab-case/` | `components/search-results/` |
-
-### Code
-
-| Scope | Convention | Example |
-|---|---|---|
-| React components | `PascalCase` | `const PaperCard = () => {}` |
-| Functions & variables | `camelCase` | `const fetchPapers = () => {}` |
-| TypeScript types / interfaces | `PascalCase` | `type PaperMetadata = {}` |
-| Zod schemas | `camelCase` + `Schema` suffix | `const paperSchema = z.object(...)` |
-| Constants | `UPPER_SNAKE_CASE` | `const MAX_RESULTS = 20` |
-| Database tables (Prisma) | `snake_case` | `paper_metadata`, `user_workspace` |
-| Environment variables | `UPPER_SNAKE_CASE` | `DATABASE_URL`, `AI_SERVICE_URL` |
+| Functions and variables | `camelCase` in TypeScript; `snake_case` in Python | `fetchPapers`, `fetch_papers` |
+| TypeScript types/interfaces | `PascalCase` | `PaperMetadata` |
+| Constants | `UPPER_SNAKE_CASE` | `MAX_RESULTS` |
+| Environment variables | `UPPER_SNAKE_CASE` | `DATABASE_URL` |
 
 ---
 
-## Code Organization
+## Target-State Code Organization
+
+The sections below describe the intended product architecture. They are guidance for future M2/M3 implementation work, not a claim that the directories already exist.
 
 ### Frontend
 
-The frontend uses a **feature-based** folder structure, not a type-based structure. Components, hooks, and utilities for a feature live together.
+The target frontend structure is feature-oriented:
 
-```
+```text
 frontend/src/
-├── app/                    # Next.js App Router — route segments
-│   ├── (auth)/             # Auth route group (login, register)
-│   ├── search/
-│   ├── papers/[id]/
-│   └── workspace/
+├── app/                    # Next.js App Router route segments
+│   ├── (auth)/             # Planned authentication routes
+│   ├── search/             # Planned search interface
+│   ├── papers/[id]/        # Planned paper detail route
+│   └── workspace/          # Planned collaboration route
 ├── components/
-│   ├── ui/                 # shadcn/ui base components (do not modify directly)
-│   ├── search/             # Search feature components
-│   ├── papers/             # Paper detail & card components
-│   └── layout/             # Navigation, headers, sidebars
-├── hooks/                  # Custom hooks (useSearch, usePaper, etc.)
-├── lib/
-│   ├── api.ts              # API client (wraps fetch with base URL and auth)
-│   └── utils.ts            # General utilities (cn(), formatDate(), etc.)
-└── types/
-    └── index.ts            # Frontend-specific TypeScript types
+│   ├── ui/                 # Planned shadcn/ui primitives
+│   ├── search/             # Planned search components
+│   ├── papers/             # Planned paper components
+│   └── layout/             # Planned navigation and layout components
+├── hooks/                  # Planned custom React hooks
+├── lib/                    # Planned API and utility modules
+└── types/                  # Planned frontend-specific types
 ```
 
 ### Backend API
 
-The backend uses a **layered architecture**: route → controller → service → repository.
+The target backend uses a layered route → controller → service → repository architecture:
 
-```
+```text
 backend/src/
-├── routes/                 # HTTP route definitions (Express Router)
-│   ├── papers.routes.ts
-│   ├── search.routes.ts
-│   └── auth.routes.ts
-├── controllers/            # Request/response handling; calls services
-│   ├── papers.controller.ts
-│   └── search.controller.ts
-├── services/               # Business logic; orchestrates calls to DB and AI service
-│   ├── papers.service.ts
-│   └── search.service.ts
-├── middleware/             # Auth middleware, error handlers, request validation
-│   ├── auth.middleware.ts
-│   └── error.middleware.ts
-├── schemas/                # Zod schemas for request body and response validation
-│   ├── paper.schema.ts
-│   └── search.schema.ts
-├── lib/
-│   ├── prisma.ts           # Prisma client singleton
-│   └── ai-client.ts        # HTTP client for the AI service
-└── index.ts                # Express app entry point
+├── routes/                 # Express route definitions
+├── controllers/            # HTTP request/response handling
+├── services/               # Business logic and orchestration
+├── middleware/             # Auth, errors, and request validation
+├── schemas/                # Planned Zod request/response schemas
+└── lib/                    # Planned Prisma and AI-service clients
 ```
 
-**Rule:** Controllers do not contain business logic. Services do not touch HTTP objects (req, res). This separation keeps each layer independently testable.
+Controllers should not contain business logic, and services should not depend on Express request or response objects. These rules become active when the corresponding layers are introduced by a milestone contribution.
 
 ### AI Service
 
-The AI service uses a **router → handler → model** pattern.
+The target AI-service structure uses a router → handler → model pattern:
 
-```
+```text
 ai-services/
-├── routers/
-│   └── embed.py            # FastAPI router for embedding endpoints
-├── handlers/
-│   └── embed_handler.py    # Request validation and response formatting
-├── models/
-│   └── embedder.py         # sentence-transformers model loading and inference
-└── main.py                 # FastAPI app entry point and router registration
+├── routers/                # Planned FastAPI routers
+├── handlers/               # Planned request validation and formatting
+├── models/                 # Planned embedding and inference models
+└── main.py                 # Current FastAPI entry point and /health route
 ```
+
+Embedding, inference, summarization, and ingestion endpoints are future functionality. The current `main.py` only provides the scaffold application and health endpoint.
 
 ---
 
-## State Management Strategy
+## Target-State State Management
 
-ResearchForge uses a **layered state model** with no global state store at MVP.
+The planned MVP state model uses TanStack Query for server state, React Context for authentication, React Hook Form for forms, and `useState` for transient UI state. These packages and feature flows are not all installed or implemented in the current scaffold.
 
-| State Type | Tool | Scope | Example |
+| State Type | Planned Tool | Scope | Example |
 |---|---|---|---|
-| **Server state** (API data) | TanStack Query | Global (cached) | Papers list, search results, user profile |
-| **Auth state** | React Context | Global | `useAuth()` hook providing user and session |
-| **Form state** | React Hook Form | Local (component) | Search input, paper submission form |
-| **Transient UI state** | `useState` | Local (component) | Modal open/closed, selected tab, loading spinner |
+| Server state | TanStack Query | Cached API data | Papers and search results |
+| Auth state | React Context | Global | User session |
+| Form state | React Hook Form | Local | Search or paper submission form |
+| Transient UI state | `useState` | Local | Modal or selected tab |
 
-**Decision rules:**
-- If data comes from the API → TanStack Query.
-- If it's the authenticated user → React Context.
-- If it's a form → React Hook Form.
-- If it's everything else → `useState`.
-- Do not introduce Zustand or Redux until a clear use case emerges in M3.
+Do not introduce Zustand or Redux without an accepted milestone requirement.
 
 ---
 
-## API Organization
+## Target-State API Organization
 
-The Backend API is a **versioned REST API**.
+The planned backend API is a versioned JSON REST API. The following values are design targets, not currently available endpoints:
 
-| Convention | Value |
+| Convention | Target value |
 |---|---|
-| **Base path** | `/api/v1/` |
-| **Format** | JSON |
-| **Docs** | `/api/docs` (Swagger UI) |
-| **Auth** | JWT in HTTP-only cookie |
+| Base path | `/api/v1/` |
+| Format | JSON |
+| Documentation | `/api/docs` after Swagger/OpenAPI is implemented |
+| Authentication | JWT in an HTTP-only cookie |
 
-### Standard Response Shape
-
-All API responses use a consistent envelope:
-
-```typescript
-// Success
-{ "data": { ... }, "meta": { ... } }
-
-// Error
-{ "error": { "code": "PAPER_NOT_FOUND", "message": "..." } }
-```
-
-> **Note:** Specific endpoint paths and request/response schemas will be defined and published in the API specification during Milestone 1.5.
-
-### Request Validation
-
-All incoming request bodies are validated with Zod schemas defined in `backend/src/schemas/`. Validation middleware applies the schema before the request reaches the controller.
+The current backend exposes only the scaffold health route at `/health`. Standard response envelopes, Zod validation, authentication middleware, and API documentation should be added only through dedicated implementation issues.
 
 ---
 
@@ -228,49 +172,32 @@ Each service manages its own environment variables independently.
 
 | Service | File | Client-side prefix |
 |---|---|---|
-| Frontend | `.env.local` | `NEXT_PUBLIC_` (client-accessible) |
-| Backend | `.env` | — |
-| AI Service | `.env` | — |
+| Frontend | `.env.local` | `NEXT_PUBLIC_` |
+| Backend | `.env` | None; server-only |
+| AI Service | `.env` | None; server-only |
 
-**Rules:**
-- Never commit `.env` files (all are in `.gitignore`).
-- Every variable used in code must be documented in the service's `.env.example`.
-- Variables that must be available to the browser must be prefixed `NEXT_PUBLIC_`. All others are server-only.
-- Validate environment variables at application startup (not at runtime) using Zod or a dedicated env-validation utility.
+Never commit environment files. Every variable used in code should be documented in the relevant `.env.example`, and future implementations should validate configuration at startup.
 
 ---
 
-## Shared Types Strategy
+## Target-State Shared Types
 
-TypeScript types are the most common source of drift between frontend and backend in a service-oriented project.
-
-**Strategy for M1.5 (scaffold phase):**
-- Zod schemas in `backend/src/schemas/` are the **authoritative source of truth** for all data shapes.
-- The frontend declares its own types in `frontend/src/types/` temporarily.
-
-**Strategy for M2+ (build phase):**
-- Create a `packages/types/` shared package in the pnpm workspace.
-- Backend Zod schemas export inferred TypeScript types.
-- Frontend imports types from `@researchforge/types`.
-- This eliminates type duplication without requiring a monorepo build system change.
+During the scaffold phase, frontend and backend types remain local to their services. A future M2+ contribution may create a `packages/types/` workspace package, export types inferred from backend schemas, and allow the frontend to consume those shared types. That package does not exist in the current repository.
 
 ---
 
-## Reusable Component Strategy
+## Target-State Reusable Components
 
-All UI components follow a three-tier model:
+When the frontend component system is introduced, it may use the following three-tier model:
 
-| Tier | Location | Description |
+| Tier | Target location | Description |
 |---|---|---|
-| **Primitive** | `frontend/src/components/ui/` | shadcn/ui components — do not modify directly; re-run shadcn CLI to update |
-| **Composite** | `frontend/src/components/[feature]/` | Feature components built from primitives (e.g. `PaperCard`, `SearchBar`) |
-| **Page** | `frontend/src/app/[route]/page.tsx` | Next.js page components that assemble composites into full views |
+| Primitive | `frontend/src/components/ui/` | shadcn/ui primitives |
+| Composite | `frontend/src/components/[feature]/` | Feature components built from primitives |
+| Page | `frontend/src/app/[route]/page.tsx` | Route-level composition |
 
-**Styling rules:**
-- All styling via Tailwind utility classes — no inline `style` props.
-- Component variants (size, intent) defined using `cva` (class-variance-authority) which ships with shadcn/ui.
-- No custom CSS files for application components. Reserve CSS Modules only for cases Tailwind cannot handle.
+Tailwind utility classes are the intended styling approach. These conventions should guide future component work but do not imply that the target directories or shadcn/ui package are already present.
 
 ---
 
-👉 **Next Step:** See the full local development setup in **[docs/DeveloperGuide.md](DeveloperGuide.md)** *(⏱️ ~5 min read)*!
+👉 **Next Step:** See the current local development setup in **[docs/DeveloperGuide.md](DeveloperGuide.md)**.
