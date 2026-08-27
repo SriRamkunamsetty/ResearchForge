@@ -36,10 +36,13 @@ jobs:
         run: pnpm install
 
       - name: Type check backend
-        run: pnpm --filter backend exec tsc --noEmit
+        run: pnpm --filter ./backend exec tsc --noEmit
 
       - name: Type check frontend
-        run: pnpm --filter frontend exec tsc --noEmit
+        run: pnpm --filter ./frontend exec tsc --noEmit
+
+      - name: Run tests
+        run: pnpm test
 
   python-check:
     name: Python Lint Check (AI Service)

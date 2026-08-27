@@ -126,6 +126,8 @@ pnpm prisma migrate dev
 
 The current scaffold has executable build, source-validation, and test commands:
 
+Run the repository-level test command from the project root:
+
 ```bash
 # Build the Node.js workspaces
 pnpm build
