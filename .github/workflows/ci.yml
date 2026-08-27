@@ -31,18 +31,16 @@ jobs:
         with:
           node-version: 20
           cache: 'pnpm'
-
       - name: Install dependencies
         run: pnpm install
-
       - name: Type check backend
         run: pnpm --filter ./backend exec tsc --noEmit
-
       - name: Type check frontend
         run: pnpm --filter ./frontend exec tsc --noEmit
-
       - name: Run tests
         run: pnpm test
+      - name: Build Node.js workspaces
+        run: pnpm build
 
   python-check:
     name: Python Lint Check (AI Service)
@@ -52,8 +50,9 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r ai-services/requirements.txt
+      - name: Validate Python source
+        run: python -m compileall -q ai-services
