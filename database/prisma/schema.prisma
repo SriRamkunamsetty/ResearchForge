@@ -12,6 +12,65 @@ datasource db {
   extensions = [pgvector(map: "vector")]
 }
 
-// NOTE: Models are intentionally omitted for Milestone 1.5.
-// Contributors will implement core data models (User, Paper, Workspace, PaperEmbedding)
-// as part of IEEE Summer of Code contributor issues.
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String
+  name      String?
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  workspaces Workspace[]
+
+  @@map("users")
+}
+
+model Paper {
+  id              String    @id @default(cuid())
+  title           String
+  abstract        String?   @db.Text
+  authors         String[]
+  doi             String?   @unique
+  arxivId         String?   @unique @map("arxiv_id")
+  url             String?
+  publicationDate DateTime? @map("publication_date")
+  journal         String?
+  citationCount   Int?      @default(0) @map("citation_count")
+  createdAt       DateTime  @default(now()) @map("created_at")
+  updatedAt       DateTime  @updatedAt @map("updated_at")
+
+  embeddings PaperEmbedding[]
+  workspaces Workspace[]
+
+  @@index([title])
+  @@map("papers")
+}
+
+model PaperEmbedding {
+  id        String                      @id @default(cuid())
+  paperId   String                      @map("paper_id")
+  embedding Unsupported("vector(384)")
+  model     String                      @default("all-MiniLM-L6-v2")
+  createdAt DateTime                    @default(now()) @map("created_at")
+  updatedAt DateTime                    @updatedAt @map("updated_at")
+
+  paper Paper @relation(fields: [paperId], references: [id], onDelete: Cascade)
+
+  @@index([paperId])
+  @@map("paper_embeddings")
+}
+
+model Workspace {
+  id          String   @id @default(cuid())
+  name        String
+  description String?  @db.Text
+  userId      String   @map("user_id")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  user   User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  papers Paper[]
+
+  @@index([userId])
+  @@map("workspaces")
+}
