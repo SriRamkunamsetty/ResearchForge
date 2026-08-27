@@ -124,7 +124,7 @@ pnpm prisma migrate dev
 
 ## Current Validation and Testing Status
 
-The current scaffold has executable build and source-validation commands:
+The current scaffold has executable build, source-validation, and test commands:
 
 ```bash
 # Build the Node.js workspaces
@@ -132,9 +132,21 @@ pnpm build
 
 # Validate Python syntax without starting the AI service
 python -m compileall -q ai-services
+
+# Run the repository-level test command
+pnpm test
 ```
 
-Service-level test suites are not yet configured on the upstream `main` branch. The root `pnpm test` entry point is reserved for the test contract being introduced in [Issue #15](https://github.com/JanmejaiPratapTonk-123/ResearchForge/issues/15); until that work is merged, a successful exit does not mean that tests were executed. Do not use the future Vitest, Jest, or Pytest commands as current availability claims.
+The current scaffold includes a backend health smoke test for `GET /health`. Frontend and AI-service test suites are planned for later milestones and are not yet configured in their workspace manifests. When those suites are added, they should be included through the same root command.
+
+To run the currently configured backend suite directly:
+
+```bash
+cd backend
+pnpm test
+```
+
+The root test command executes the currently configured backend test rather than serving as a no-op. Broader Vitest, Jest, or Pytest suites remain future work unless they are explicitly added to the workspace manifests.
 
 ---
 
