@@ -123,18 +123,19 @@ pnpm prisma migrate dev
 
 ## Running Tests
 
-```bash
-# Frontend (Vitest)
-cd frontend
-pnpm test
+Run the repository-level test command from the project root:
 
-# Backend (Jest)
+```bash
+pnpm test
+```
+
+The current scaffold includes a backend Jest smoke test for `GET /health`. Frontend and AI-service test suites are planned for later milestones and are not yet configured in their workspace manifests. When those suites are added, they should be included through the same root command.
+
+To run the currently configured backend suite directly:
+
+```bash
 cd backend
 pnpm test
-
-# AI Service (Pytest)
-cd ai-services
-uv run pytest
 ```
 
 ---
